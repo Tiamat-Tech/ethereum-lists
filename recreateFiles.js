@@ -12,13 +12,14 @@ function recreateContractFiles() {
       );
       const currentAddress = newFile.address;
       newFile.address = utils.toChecksumAddress(currentAddress);
-
-      fs.unlinkSync(`${contractsDirectory}/${folderFile}/${file}`);
-      fs.writeFileSync(
+      fs.rename(
+        `${contractsDirectory}/${folderFile}/${file}`,
         `${contractsDirectory}/${folderFile}/${utils.toChecksumAddress(
           file.replace('.json', '')
         )}.json`,
-        JSON.stringify(newFile)
+        function(err) {
+          if (err) console.log('ERROR: ', err);
+        }
       );
     });
   });
@@ -32,12 +33,14 @@ function recreateTokenFiles() {
       );
       const currentAddress = newFile.address;
       newFile.address = utils.toChecksumAddress(currentAddress);
-      fs.unlinkSync(`${tokensDirectory}/${folderFile}/${file}`);
-      fs.writeFileSync(
+      fs.rename(
+        `${tokensDirectory}/${folderFile}/${file}`,
         `${tokensDirectory}/${folderFile}/${utils.toChecksumAddress(
           file.replace('.json', '')
         )}.json`,
-        JSON.stringify(newFile)
+        function(err) {
+          if (err) console.log('ERROR: ', err);
+        }
       );
     });
   });
@@ -64,8 +67,8 @@ function recreateIconFiles() {
           findAddressStart
         )}-${dateT}-${checksumAddress}${extension}`;
         fs.rename(
-          `${tokensDirectory}/${imgFile}`,
-          `${tokensDirectory}/${newName}`,
+          `${iconsDirectory}/${imgFile}`,
+          `${iconsDirectory}/${newName}`,
           function(err) {
             if (err) console.log('ERROR: ', err);
           }
@@ -77,10 +80,9 @@ function recreateIconFiles() {
   });
 }
 
-// function recreateFiles() {
-//   recreateContractFiles();
-//   recreateTokenFiles();
-// }
+function recreateFiles() {
+  recreateContractFiles();
+  recreateTokenFiles();
+  recreateIconFiles();
+}
 // module.exports = recreateFiles;
-
-recreateIconFiles();
