@@ -83,6 +83,6 @@ function recreateIconFiles() {
 function recreateFiles() {
   recreateContractFiles();
   recreateTokenFiles();
-  recreateIconFiles();
+  // recreateIconFiles();
 }
-// module.exports = recreateFiles;
+module.exports = recreateFiles;
